@@ -6,7 +6,7 @@ tasks = [
     {"subject": "英語", "deadline": "06-15", "importance": 2, "done": False, "tag": "単語"}
 ]
 
-# 1. 表示関数（基本のif文に修正）
+# 1. 表示関数
 def show_tasks():
     print("--------------------")
     for t in tasks:
