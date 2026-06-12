@@ -1,0 +1,109 @@
+import json
+import os
+
+FILE_NAME = "tasks_data.json"
+tasks = []
+
+# --- データ保存・読み込み ---
+def load_tasks():
+    global tasks
+    if os.path.exists(FILE_NAME):
+        with open(FILE_NAME, "r", encoding="utf-8") as f:
+            tasks = json.load(f)
+
+def save_tasks():
+    with open(FILE_NAME, "w", encoding="utf-8") as f:
+        json.dump(tasks, f, ensure_ascii=False, indent=4)
+
+# --- 各種機能 ---
+def add_task(sub, dead, imp, tag_name):
+    tasks.append({"subject": sub, "deadline": dead, "importance": int(imp), "done": False, "tag": tag_name})
+    print(">> " + sub + " を登録しました！")
+
+def show_tasks():
+    print("\n--- 現在の課題リスト ---")
+    if len(tasks) == 0:
+        print("課題はありません。")
+        return
+    for t in tasks:
+        if t["done"] == True:
+            status = "完了"
+        else:
+            status = "未"
+        print("[" + status + "] " + t["subject"] + " (期限:" + t["deadline"] + ")")
+
+def complete_task(sub):
+    for t in tasks:
+        if t["subject"] == sub:
+            t["done"] = True
+            print(">> " + sub + " を完了にしました！")
+            return
+    print(">> その課題は見つかりませんでした。")
+
+def delete_task(sub):
+    for t in tasks:
+        if t["subject"] == sub:
+            tasks.remove(t)
+            print(">> " + sub + " を削除しました。")
+            return
+    print(">> その課題は見つかりませんでした。")
+
+def show_progress():
+    total = len(tasks)
+    if total == 0:
+        print(">> 課題がありません。")
+        return
+    
+    done_count = 0
+    for t in tasks:
+        if t["done"] == True:
+            done_count = done_count + 1
+            
+    percent = int((done_count / total) * 100)
+    
+    # ゲージの計算（10%でブロック1つ）
+    blocks = percent // 10
+    spaces = 10 - blocks
+    bar = "█" * blocks + " " * spaces
+    
+    print("\n=== 現在の進捗 ===")
+    print("達成率: [" + bar + "] " + str(percent) + "%")
+    print("==================")
+
+# --- メインメニュー ---
+def main_menu():
+    load_tasks()
+    print("★ 前回のデータを読み込みました")
+    
+    while True:
+        print("\n=== メニュー ===")
+        print("1: 追加  2: 表示  3: 完了にする")
+        print("4: 削除  5: 進捗バー  6: 保存して終了")
+        
+        choice = input("番号を選択(1-6): ")
+        
+        if choice == "1":
+            s = input("課題名: ")
+            d = input("期限(MM-DD): ")
+            i = input("重要度(1-3): ")
+            t = input("タグ: ")
+            add_task(s, d, i, t)
+        elif choice == "2":
+            show_tasks()
+        elif choice == "3":
+            s = input("完了にする課題名は？: ")
+            complete_task(s)
+        elif choice == "4":
+            s = input("削除する課題名は？: ")
+            delete_task(s)
+        elif choice == "5":
+            show_progress()
+        elif choice == "6":
+            save_tasks()
+            print("★ データを保存して終了します。")
+            break
+        else:
+            print(">> 正しい番号を入力してください。")
+
+# 実行
+main_menu()

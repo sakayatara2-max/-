@@ -1,0 +1,55 @@
+
+
+# 初期データ
+tasks = [
+    {"subject": "数学", "deadline": "06-20", "importance": 1, "done": False, "tag": "プリント"},
+    {"subject": "英語", "deadline": "06-15", "importance": 2, "done": False, "tag": "単語"}
+]
+
+# 1. 表示関数（基本のif文に修正）
+def show_tasks():
+    print("--------------------")
+    for t in tasks:
+        if t["done"] == True:
+            status = "完了"
+        else:
+            status = "未"
+        print("[" + status + "] " + t["subject"] + " (" + t["tag"] + ") 期限: " + t["deadline"] + ", 重要度: " + str(t["importance"]))
+    print("--------------------")
+
+# 2. 課題追加関数
+def add_task(sub, dead, imp, tag_name):
+    new_task = {"subject": sub, "deadline": dead, "importance": imp, "done": False, "tag": tag_name}
+    tasks.append(new_task)
+    print(sub + " を追加しました")
+
+# 3. 検索機能
+def search_by_tag(target_tag):
+    print("=== 「" + target_tag + "」の検索結果 ===")
+    for t in tasks:
+        if t["tag"] == target_tag:
+            if t["done"] == True:
+                status = "完了"
+            else:
+                status = "未"
+            print("[" + status + "] " + t["subject"] + " 期限: " + t["deadline"])
+    print("=========================")
+
+# 4. 進捗ダッシュボード
+def show_progress():
+    total = len(tasks)
+    if total == 0:
+        return
+    done = 0
+    for t in tasks:
+        if t["done"] == True:
+            done = done + 1
+    percent = int((done / total) * 100)
+    print("=== 進捗: " + str(percent) + "% ===")
+
+# --- 実行テスト ---
+add_task("歴史", "06-12", 3, "レポート")
+add_task("理科", "06-20", 2, "レポート")
+show_tasks()
+search_by_tag("レポート")
+show_progress()
