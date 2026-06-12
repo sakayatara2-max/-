@@ -1,7 +1,7 @@
 import json
 import os
 
-# --- 課題管理システム 完全版（保存機能付き） ---
+# --- 保存機能付き ---
 
 FILE_NAME = "tasks_data.json"
 tasks = []
@@ -37,7 +37,7 @@ def show_tasks():
             status = "未"
         print("[" + status + "] " + t["subject"] + " (期限:" + t["deadline"] + ")")
 
-# 対話メニュー
+# メニュー
 def main_menu():
     load_tasks()  # 起動時に読み込む
     
