@@ -1,0 +1,43 @@
+# --- 課題管理システム 完全版（対話型） ---
+tasks = []
+
+def add_task(sub, dead, imp, tag_name):
+    tasks.append({"subject": sub, "deadline": dead, "importance": int(imp), "done": False, "tag": tag_name})
+    print(sub + " を登録しました！")
+
+def show_tasks():
+    print("\n--- 現在の課題リスト ---")
+    for t in tasks:
+        # 三項演算子を使わず、普通のif-elseにします
+        if t["done"] == True:
+            status = "完了"
+        else:
+            status = "未"
+        print("[" + status + "] " + t["subject"] + " (期限:" + t["deadline"] + ")")
+
+# 対話メニュー
+def main_menu():
+    while True:
+        print("\n=== メニューを選択してください ===")
+        print("1: 課題を追加")
+        print("2: リストを表示")
+        print("3: 終了")
+        
+        choice = input("選択してください: ")
+        
+        if choice == "1":
+            s = input("課題名は？: ")
+            d = input("期限は？(MM-DD): ")
+            i = input("重要度は？(1-3): ")
+            t = input("タグは？: ")
+            add_task(s, d, i, t)
+        elif choice == "2":
+            show_tasks()
+        elif choice == "3":
+            print("終了します。")
+            break
+        else:
+            print("1, 2, 3 のどれかを入力してください。")
+
+# 実行
+main_menu()
